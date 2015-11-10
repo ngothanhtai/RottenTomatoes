@@ -1,2 +1,2 @@
 # RottenTomatoes
-CoderSchool
+Time spent: * hours
