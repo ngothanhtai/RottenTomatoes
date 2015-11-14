@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		44212EC11BF6D8AC00F91D54 /* MovieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44212EC01BF6D8AC00F91D54 /* MovieCollectionViewCell.swift */; };
 		44B8553B1BF0CC620072024E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B8553A1BF0CC620072024E /* AppDelegate.swift */; };
 		44B8553D1BF0CC620072024E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B8553C1BF0CC620072024E /* ViewController.swift */; };
 		44B855401BF0CC620072024E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44B8553E1BF0CC620072024E /* Main.storyboard */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		44212EC01BF6D8AC00F91D54 /* MovieCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieCollectionViewCell.swift; sourceTree = "<group>"; };
 		44B855371BF0CC620072024E /* RottenTomatoes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RottenTomatoes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44B8553A1BF0CC620072024E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		44B8553C1BF0CC620072024E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -54,6 +56,14 @@
 				6376A499AB3ECE571DE8F8EC /* Pods_RottenTomatoes.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		44212EBF1BF6D88F00F91D54 /* CollectionViews */ = {
+			isa = PBXGroup;
+			children = (
+				44212EC01BF6D8AC00F91D54 /* MovieCollectionViewCell.swift */,
+			);
+			name = CollectionViews;
 			sourceTree = "<group>";
 		};
 		44B8552E1BF0CC610072024E = {
@@ -93,6 +103,7 @@
 		44B855501BF1F8840072024E /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				44212EBF1BF6D88F00F91D54 /* CollectionViews */,
 				44B8553C1BF0CC620072024E /* ViewController.swift */,
 				44B8554C1BF0D19B0072024E /* MovieCell.swift */,
 			);
@@ -250,6 +261,7 @@
 				44EF29351BF329E300975731 /* ImageManager.swift in Sources */,
 				44EF29391BF33C8400975731 /* Movie.swift in Sources */,
 				44B8553B1BF0CC620072024E /* AppDelegate.swift in Sources */,
+				44212EC11BF6D8AC00F91D54 /* MovieCollectionViewCell.swift in Sources */,
 				44B8554D1BF0D19B0072024E /* MovieCell.swift in Sources */,
 				44FD22931BF22FF2009599AA /* DetailViewController.swift in Sources */,
 			);

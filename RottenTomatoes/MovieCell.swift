@@ -27,7 +27,7 @@ class MovieCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func updateUI(movie:NSDictionary, indexPath:NSIndexPath) {
+    func updateUI(movie:NSDictionary) {
         let title =  "\(movie["title"]!)"
         titleLabel.text = title
         descriptionLabel.text = "\(movie["synopsis"]!)"
