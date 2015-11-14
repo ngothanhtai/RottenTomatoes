@@ -87,9 +87,11 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-RottenTomatoes/Alamofire.framework"
   install_framework "Pods-RottenTomatoes/AlamofireImage.framework"
   install_framework "Pods-RottenTomatoes/EVReflection.framework"
+  install_framework "Pods-RottenTomatoes/JTProgressHUD.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-RottenTomatoes/Alamofire.framework"
   install_framework "Pods-RottenTomatoes/AlamofireImage.framework"
   install_framework "Pods-RottenTomatoes/EVReflection.framework"
+  install_framework "Pods-RottenTomatoes/JTProgressHUD.framework"
 fi

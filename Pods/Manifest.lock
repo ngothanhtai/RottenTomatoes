@@ -3,15 +3,18 @@ PODS:
   - AlamofireImage (2.1.0):
     - Alamofire (~> 3.1)
   - EVReflection (2.11.1)
+  - JTProgressHUD (1.0.3)
 
 DEPENDENCIES:
   - Alamofire (~> 3.1)
   - AlamofireImage (~> 2.0)
   - EVReflection (~> 2.11)
+  - JTProgressHUD
 
 SPEC CHECKSUMS:
   Alamofire: 7c16ca65f3c7e681fd925fd7f2dec7747ff96855
   AlamofireImage: 97e00995920d85b5cb23ee4c3b7f92605f5dc74b
   EVReflection: 89362cd97308a407ffe9b81e0d3884fd0927f394
+  JTProgressHUD: d2519c41e664acb554932aac12f5a94b47d88a69
 
 COCOAPODS: 0.39.0

@@ -29,7 +29,6 @@
 		44B855461BF0CC620072024E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		44B8554C1BF0D19B0072024E /* MovieCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
 		44EF29341BF329E300975731 /* ImageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
-		44EF29361BF32BC700975731 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		44EF29381BF33C8400975731 /* Movie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
 		44FD22921BF22FF2009599AA /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		6376A499AB3ECE571DE8F8EC /* Pods_RottenTomatoes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RottenTomatoes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -96,7 +95,6 @@
 			children = (
 				44B8553C1BF0CC620072024E /* ViewController.swift */,
 				44B8554C1BF0D19B0072024E /* MovieCell.swift */,
-				44EF29361BF32BC700975731 /* MyPlayground.playground */,
 			);
 			name = Main;
 			sourceTree = "<group>";
