@@ -145,7 +145,7 @@
                         <gestureRecognizers/>
                     </view>
                     <navigationItem key="navigationItem" id="P7j-Dr-4PY">
-                        <barButtonItem key="leftBarButtonItem" style="plain" id="Bv4-Ev-7Yu">
+                        <barButtonItem key="leftBarButtonItem" style="done" id="Bv4-Ev-7Yu">
                             <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="DQR-gS-9nH">
                                 <rect key="frame" x="16" y="8" width="71" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
