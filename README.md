@@ -35,3 +35,6 @@ Optional
 * [x] Implement segmented control to switch between list view and grid view
 
 #Walkthrough
+![Video Walkthrough](rottenromatoes.gif)
+
+GIF created with [LiceCap](http://www.cockos.com/licecap/).
