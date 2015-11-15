@@ -5,7 +5,7 @@
 
 target 'RottenTomatoes' do
 
-pod 'JTProgressHUD’
+pod 'JTProgressHUD'
 pod 'AFNetworking'
 
 end

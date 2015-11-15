@@ -10,20 +10,27 @@ import Foundation
 
 
 class API {
+    
+    static var currentDataTask:NSURLSessionDataTask?
     struct URL {
         static let boxOffice = "https://coderschool-movies.herokuapp.com/movies?api_key=xja087zcvxljadsflh214"
         static let dvd = "https://coderschool-movies.herokuapp.com/dvds?api_key=xja087zcvxljadsflh214"
     }
     
-    static func getMovies(refresh:Bool, onSuccess: (data:NSData, refresh:Bool) -> Void, onFailure: (error:NSError, refresh:Bool) -> Void) -> NSURLSessionDataTask {
-        return fetchData(URL.boxOffice, refresh: refresh, onSuccess: onSuccess, onFailure: onFailure)
+    static func getMovies(refresh:Bool, onSuccess: (data:NSData, refresh:Bool) -> Void, onFailure: (error:NSError, refresh:Bool) -> Void) -> Void {
+        currentDataTask = fetchData(URL.boxOffice, refresh: refresh, onSuccess: onSuccess, onFailure: onFailure)
     }
     
-    static func getDVD(refresh:Bool, onSuccess: (data:NSData, refresh:Bool) -> Void, onFailure: (error:NSError, refresh:Bool) -> Void) -> NSURLSessionDataTask {
-        return fetchData(URL.dvd, refresh: refresh, onSuccess: onSuccess, onFailure: onFailure)
+    static func getDVD(refresh:Bool, onSuccess: (data:NSData, refresh:Bool) -> Void, onFailure: (error:NSError, refresh:Bool) -> Void) -> Void {
+        currentDataTask = fetchData(URL.dvd, refresh: refresh, onSuccess: onSuccess, onFailure: onFailure)
     }
     
     static func fetchData(apiURL:String, refresh:Bool, onSuccess: (data:NSData, refresh:Bool) -> Void, onFailure: (error:NSError, refresh:Bool) -> Void) -> NSURLSessionDataTask {
+        
+        if(currentDataTask != nil)
+        {
+            currentDataTask?.cancel()
+        }
 
         let url = NSURL(string: apiURL)
         let sesson = NSURLSession.sharedSession()

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import EVReflection
 import JTProgressHUD
 
 struct StoryBoard {
@@ -32,7 +31,7 @@ class ViewController: UIViewController {
     var listRefreshControl:UIRefreshControl!
     var gridRefreshControl:UIRefreshControl!
     
-    var currentDataTask:NSURLSessionDataTask?
+    var currentTabBar:Tab = Tab.BoxOffice
     
     // MARK: Enumerations
     enum Tab : Int {
@@ -127,10 +126,12 @@ class ViewController: UIViewController {
     }
     
     func fetchData(tab:Tab, refresh:Bool = false) {
-        
-        if(currentDataTask != nil)
-        {
-            currentDataTask?.cancel()
+ 
+        switch tab {
+        case Tab.BoxOffice:
+            API.getMovies(refresh, onSuccess: onSuccess, onFailure: onFailure)
+        case Tab.DVD:
+            API.getDVD(refresh, onSuccess: onSuccess, onFailure: onFailure)
         }
         
         if !refresh {
@@ -140,14 +141,6 @@ class ViewController: UIViewController {
         }
         
         self.showNetworkError(false, animated: false)
-        
-        switch tab {
-        case Tab.BoxOffice:
-            currentDataTask = API.getMovies(refresh, onSuccess: onSuccess, onFailure: onFailure)
-        case Tab.DVD:
-            currentDataTask = API.getDVD(refresh, onSuccess: onSuccess, onFailure: onFailure)
-        }
-        
     }
     
     func onSuccess(data:NSData, refresh:Bool) {
@@ -171,7 +164,14 @@ class ViewController: UIViewController {
     }
     
     func onFailure(error:NSError, refresh:Bool) {
-        self.showNetworkError(true)
+        if error.code == NSURLError.Cancelled.rawValue
+        {
+            
+        }
+        else
+        {
+            self.showNetworkError(true)
+        }
  
         JTProgressHUD.hide()
         if refresh {
@@ -183,7 +183,7 @@ class ViewController: UIViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let detailViewController = segue.destinationViewController as? DetailViewController {
             let indexPath = sender as! NSIndexPath
-            detailViewController.movie = self.movies[indexPath.row]
+            detailViewController.movie = self.filtered[indexPath.row]
         }
         
         view.endEditing(true)
@@ -223,8 +223,14 @@ class ViewController: UIViewController {
 
 // MARK: Tab Bar
 extension ViewController : UITabBarDelegate {
+    
     func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
         let tab = Tab.init(rawValue: item.tag)!
+        if(tab == currentTabBar)
+        {
+            return
+        }
+        self.currentTabBar = tab
         fetchData(tab)
     }
 }
