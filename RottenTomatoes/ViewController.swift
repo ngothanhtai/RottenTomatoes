@@ -172,6 +172,7 @@ class ViewController: UIViewController {
     
     func onFailure(error:NSError, refresh:Bool) {
         self.showNetworkError(true)
+ 
         JTProgressHUD.hide()
         if refresh {
             self.refreshControl.endRefreshing()
@@ -195,29 +196,19 @@ class ViewController: UIViewController {
     
     func showNetworkError(show:Bool, animated:Bool = true) {
         if show {
-            if animated {
-                UIView.animateWithDuration(0.5, animations: showNetworkInfoView)
-            } else {
-                showNetworkInfoView()
-            }
+            UIView.animateWithDuration(0.5, animations: showNetworkInfoView)
             
         } else {
-            if animated {
-                UIView.animateWithDuration(0.5, animations: hideNetworkInfoView)
-            } else {
-                hideNetworkInfoView()
-            }
+            UIView.animateWithDuration(0.5, animations: hideNetworkInfoView)
             
         }
     }
     
     func showNetworkInfoView() {
-        self.networkInfoView.frame.origin = CGPoint(x: self.networkInfoView.frame.origin.x, y: 44)
-        self.networkInfoView.alpha = 0.65
+        self.networkInfoView.alpha = 1
     }
     
     func hideNetworkInfoView() {
-        self.networkInfoView.frame.origin = CGPoint(x: self.networkInfoView.frame.origin.x, y: 0)
         self.networkInfoView.alpha = 0
     }
     

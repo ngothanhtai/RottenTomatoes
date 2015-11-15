@@ -35,12 +35,11 @@ class DetailViewController: UIViewController {
 
             self.audienceRating.text = "\(audienceRatingScore)% liked it"
             self.criticsRating.text = "\(criticsRatingScore)%"
-            self.synopsis.text = "\(_movie["synopsis"]!)"
-            self.synopsis.sizeToFit()
+            setSynopsisData((_movie["synopsis"] as? String)!)
             self.releaseDateLabel.text = "\(releaseDate)"
             self.runtimeLabel.text = "\(runtime) minutes"
-            self.title = movie!["title"] as? String
-            self.filmNameLabel.text = self.title
+//            self.title = movie!["title"] as? String
+            self.filmNameLabel.text = movie!["title"] as? String
             
             ImageManager.loadPosters(thumbnailURL, detailedURL: detailedURL, posterImageView: self.posterImageView)
         }
@@ -54,4 +53,18 @@ class DetailViewController: UIViewController {
         self.scrollView.contentSize.height = self.synopsis.frame.origin.y + self.synopsis.frame.height + 10;
     }
 
+    func setSynopsisData(value:String) {
+        
+//        self.synopsis.text = "\(_movie["synopsis"]!)"
+//        self.synopsis.sizeToFit()
+        
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 5
+        
+        let attrString = NSMutableAttributedString(string: value)
+        attrString.addAttribute(NSParagraphStyleAttributeName, value:paragraphStyle, range:NSMakeRange(0, attrString.length))
+        
+        self.synopsis.attributedText = attrString
+        self.synopsis.sizeToFit()
+    }
 }

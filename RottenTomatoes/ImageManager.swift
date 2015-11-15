@@ -31,7 +31,7 @@ class ImageManager {
     }
     
     static func loadImage(urlString:String, posterImageView:UIImageView, callBack: (dynamicImage:UIImage, fromCache:Bool) -> Void) {
-        let urlRequest = NSURLRequest(URL: NSURL(string: urlString)!)
+        let urlRequest = NSURLRequest(URL: NSURL(string: urlString)!, cachePolicy: NSURLRequestCachePolicy.ReturnCacheDataElseLoad, timeoutInterval: 86400)
         posterImageView.setImageWithURLRequest(urlRequest, placeholderImage: nil, success: { (urlRequest:NSURLRequest, httpURLResponse:NSHTTPURLResponse?, image:UIImage) -> Void in
             callBack(dynamicImage: image, fromCache: httpURLResponse == nil)
             
