@@ -29,6 +29,15 @@ class ViewController: UIViewController {
     var filtered = [NSDictionary]()
     var searchActive = false
     var refreshControl:UIRefreshControl!
+    var listRefreshControl:UIRefreshControl!
+    var gridRefreshControl:UIRefreshControl!
+    
+    var currentDataTask:NSURLSessionDataTask?
+    
+    enum Tab {
+        case BoxOffice
+        case DVD
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,18 +47,26 @@ class ViewController: UIViewController {
         initControls()
         initDelegateAndDataSource()
 
-        fetchMovies()
+        fetchData(Tab.BoxOffice)
         
+    }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return .LightContent
     }
     
     func initControls () {
         
         self.title = "Movies"
         
-        // init refreshControl
-        refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: "onRefresh", forControlEvents: .ValueChanged)
-        tableView.insertSubview(refreshControl, atIndex: 0)
+        self.navigationController?.navigationBar.barStyle = .Black;
+        
+        listRefreshControl = UIRefreshControl()
+        listRefreshControl.addTarget(self, action: "onRefresh", forControlEvents: .ValueChanged)
+        self.tableView.insertSubview(listRefreshControl, atIndex: 0)
+        gridRefreshControl = UIRefreshControl()
+        gridRefreshControl.addTarget(self, action: "onRefresh", forControlEvents: .ValueChanged)
+        self.collectionView.insertSubview(gridRefreshControl, atIndex: 0)
         
         networkInfoView.alpha = 0
         
@@ -71,53 +88,60 @@ class ViewController: UIViewController {
     
     // MARK: Actions
     @IBAction func onSegmentValueChanged(sender: AnyObject) {
+        
         showViewBasedOnSegmentSelection()
     }
     
     func showViewBasedOnSegmentSelection() {
-
+        
+        listRefreshControl.endRefreshing()
+        gridRefreshControl.endRefreshing()
+        
         switch segmentChangeView.selectedSegmentIndex
         {
         case 1:
             tableView.hidden = true
             collectionView.hidden = false
+            
+            refreshControl = gridRefreshControl
         
         default:
             tableView.hidden = false
             collectionView.hidden = true
             
-            
+            refreshControl = listRefreshControl
         }
         
     }
     
-    func fetchMovies(refresh:Bool = false) {
+    func fetchData(tab:Tab, refresh:Bool = false) {
         
-        self.showNetworkError(false, animated: false)
-        showLoadingIcon(refresh)
-        
-        API.getMovies(refresh, onSuccess: onSuccess, onFailure: onFailure)
-    }
-    
-    func fetchDVD(refresh:Bool = false) {
-        self.showNetworkError(false, animated: false)
-        showLoadingIcon(refresh)
-        
-        API.getDVD(refresh, onSuccess: onSuccess, onFailure: onFailure)
-    }
-    
-    func showLoadingIcon(refresh:Bool) {
+        if(currentDataTask != nil)
+        {
+            currentDataTask?.cancel()
+        }
         
         if !refresh {
             // show animation loading icon
             JTProgressHUD.show()
             //
         }
+        
+        self.showNetworkError(false, animated: false)
+        
+        switch tab {
+        case Tab.BoxOffice:
+            currentDataTask = API.getMovies(refresh, onSuccess: onSuccess, onFailure: onFailure)
+        case Tab.DVD:
+            currentDataTask = API.getDVD(refresh, onSuccess: onSuccess, onFailure: onFailure)
+        }
+        
     }
     
     func onSuccess(data:NSData, refresh:Bool) {
         let json = try! NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as! NSDictionary
         self.movies = json["movies"] as! [NSDictionary]
+        self.filtered = self.movies
         
         self.showNetworkError(false)
         
@@ -129,6 +153,8 @@ class ViewController: UIViewController {
         else {
             JTProgressHUD.hide()
         }
+        
+        searchBar.text = ""
     }
     
     func onFailure(error:NSError, refresh:Bool) {
@@ -152,9 +178,9 @@ class ViewController: UIViewController {
     func onRefresh() {
         switch tabBar.selectedItem!.tag {
         case 1:
-            fetchDVD(true)
+            fetchData(Tab.DVD, refresh: true)
         default:
-            fetchMovies(true)
+            fetchData(Tab.BoxOffice, refresh: true)
         }
     }
     
@@ -177,18 +203,21 @@ class ViewController: UIViewController {
     }
     
     func showNetworkInfoView() {
-        self.networkInfoView.frame.origin = CGPoint(x: self.networkInfoView.frame.origin.x, y: 108)
-        self.networkInfoView.alpha = 0.85
+        self.networkInfoView.frame.origin = CGPoint(x: self.networkInfoView.frame.origin.x, y: 44)
+        self.networkInfoView.alpha = 0.65
     }
     
     func hideNetworkInfoView() {
-        self.networkInfoView.frame.origin = CGPoint(x: self.networkInfoView.frame.origin.x, y: 64)
+        self.networkInfoView.frame.origin = CGPoint(x: self.networkInfoView.frame.origin.x, y: 0)
         self.networkInfoView.alpha = 0
     }
     
     func reloadData() {
         self.tableView.reloadData()
         self.collectionView.reloadData()
+        
+        self.tableView.setContentOffset(CGPointZero, animated: false)
+        self.collectionView.setContentOffset(CGPointZero, animated: false)
     }
 }
 
@@ -198,11 +227,11 @@ extension ViewController : UITabBarDelegate {
         switch item.tag
         {
             case 0:
-                fetchMovies()
+                fetchData(Tab.BoxOffice)
             case 1:
-                fetchDVD()
+                fetchData(Tab.DVD)
             default:
-                fetchMovies()
+                fetchData(Tab.BoxOffice)
         }
     }
 }
@@ -210,26 +239,19 @@ extension ViewController : UITabBarDelegate {
 // MARK: Search
 extension ViewController : UISearchBarDelegate {
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
-        searchActive = true
+
     }
     
     func searchBarTextDidEndEditing(searchBar: UISearchBar) {
-        searchActive = false
-        
         searchBar.resignFirstResponder()
     }
     
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        
-        searchActive = false
-        
         searchBar.resignFirstResponder()
     }
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        searchActive = true
-        
         searchBar.resignFirstResponder()
     }
     
@@ -254,28 +276,24 @@ extension ViewController : UISearchBarDelegate {
 extension ViewController : UITableViewDelegate, UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if searchActive {
-            return filtered.count
-        }
-        return movies.count
+        return filtered.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if movies.count == 0
+        if filtered.count == 0
         {
             return UITableViewCell()
         }
-        
-        if searchActive {
-            if filtered.count == 0
-            {
-                return UITableViewCell()
-            }
-        }
+
         let cell = tableView.dequeueReusableCellWithIdentifier(StoryBoard.MovieCell) as! MovieCell
-        let movie = searchActive ? filtered[indexPath.row] : movies[indexPath.row]
+        let movie = filtered[indexPath.row]
         
         cell.updateUI(movie)
+        
+        let selectedBG = UIView()
+
+        selectedBG.backgroundColor = UIColor(colorLiteralRed: 164.0/255.0, green: 218.0/255.0, blue: 246.0/255.0, alpha: 1.0)
+        cell.selectedBackgroundView = selectedBG
         
         return cell
     }
@@ -286,24 +304,22 @@ extension ViewController : UITableViewDelegate, UITableViewDataSource {
         self.tableView.deselectRowAtIndexPath(indexPath, animated: false)
         self.performSegueWithIdentifier(StoryBoard.DetailView, sender: indexPath)
     }
+
 }
 
 // MARK : Collection View
 extension ViewController : UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if searchActive {
-            return filtered.count
-        }
-        return movies.count
+        return filtered.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if movies.count == 0
+        if filtered.count == 0
         {
             return UICollectionViewCell()
         }
         let cell = self.collectionView.dequeueReusableCellWithReuseIdentifier(StoryBoard.MovieCollectionViewCell, forIndexPath: indexPath) as! MovieCollectionViewCell
-        let movie = searchActive ? filtered[indexPath.row] : movies[indexPath.row]
+        let movie = filtered[indexPath.row]
         
         cell.updateUI(movie)
         
@@ -311,9 +327,16 @@ extension ViewController : UICollectionViewDelegate, UICollectionViewDataSource 
         return cell
     }
     
+    
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        
-//        let cell = self.collectionView.cellForItemAtIndexPath(indexPath) as! MovieCollectionViewCell
+        let cell = self.collectionView.cellForItemAtIndexPath(indexPath)
+        cell?.backgroundColor = UIColor(colorLiteralRed: 164.0/255.0, green: 218.0/255.0, blue: 246.0/255.0, alpha: 1.0)
         self.performSegueWithIdentifier(StoryBoard.DetailView, sender: indexPath)
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC)))
+        dispatch_after(delayTime, dispatch_get_main_queue()) { () -> Void in
+            let cell = self.collectionView.cellForItemAtIndexPath(indexPath)
+            cell?.backgroundColor = UIColor.whiteColor()
+        }
+        
     }
 }

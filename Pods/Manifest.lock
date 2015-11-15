@@ -20,17 +20,14 @@ PODS:
   - AFNetworking/UIKit (2.6.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - EVReflection (2.11.1)
   - JTProgressHUD (1.0.3)
 
 DEPENDENCIES:
   - AFNetworking
-  - EVReflection (~> 2.11)
   - JTProgressHUD
 
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
-  EVReflection: 89362cd97308a407ffe9b81e0d3884fd0927f394
   JTProgressHUD: d2519c41e664acb554932aac12f5a94b47d88a69
 
 COCOAPODS: 0.39.0

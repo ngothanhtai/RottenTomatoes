@@ -5,7 +5,6 @@
 
 target 'RottenTomatoes' do
 
-pod 'EVReflection', '~> 2.11'
 pod 'JTProgressHUD’
 pod 'AFNetworking'
 

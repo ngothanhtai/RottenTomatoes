@@ -68,12 +68,13 @@
 			name = Services;
 			sourceTree = "<group>";
 		};
-		44212EBF1BF6D88F00F91D54 /* CollectionViews */ = {
+		44212EBF1BF6D88F00F91D54 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				44B8554C1BF0D19B0072024E /* MovieCell.swift */,
 				44212EC01BF6D8AC00F91D54 /* MovieCollectionViewCell.swift */,
 			);
-			name = CollectionViews;
+			name = Cells;
 			sourceTree = "<group>";
 		};
 		44B8552E1BF0CC610072024E = {
@@ -113,9 +114,8 @@
 		44B855501BF1F8840072024E /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				44212EBF1BF6D88F00F91D54 /* CollectionViews */,
+				44212EBF1BF6D88F00F91D54 /* Cells */,
 				44B8553C1BF0CC620072024E /* ViewController.swift */,
-				44B8554C1BF0D19B0072024E /* MovieCell.swift */,
 			);
 			name = Main;
 			sourceTree = "<group>";
