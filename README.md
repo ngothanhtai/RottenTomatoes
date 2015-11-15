@@ -2,7 +2,9 @@
 This is a movies app displaying box office and top rental DVDs using the Rotten Tomatoes API.
 
 I don't use Autolayout yet so the UI is only for iPhone 4s (3.5-inch).
+
 Libraries: AFNetworking, JTProgressHUD
+
 Time spent: About 12 hours
 
 #Features
