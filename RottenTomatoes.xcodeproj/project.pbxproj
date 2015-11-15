@@ -60,12 +60,12 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		440F65321BF7529F0082C370 /* Service */ = {
+		440F65321BF7529F0082C370 /* Services */ = {
 			isa = PBXGroup;
 			children = (
 				440F65331BF752AA0082C370 /* API.swift */,
 			);
-			name = Service;
+			name = Services;
 			sourceTree = "<group>";
 		};
 		44212EBF1BF6D88F00F91D54 /* CollectionViews */ = {
@@ -97,16 +97,15 @@
 		44B855391BF0CC620072024E /* RottenTomatoes */ = {
 			isa = PBXGroup;
 			children = (
-				440F65321BF7529F0082C370 /* Service */,
-				44EF29371BF33C7C00975731 /* Model */,
+				44FA8FD41BF835A70083CCA1 /* Utils */,
+				44FA8FD31BF8358B0083CCA1 /* Storyboards */,
+				440F65321BF7529F0082C370 /* Services */,
+				44EF29371BF33C7C00975731 /* Models */,
 				44FD22911BF22FD0009599AA /* Details */,
 				44B855501BF1F8840072024E /* Main */,
 				44B8553A1BF0CC620072024E /* AppDelegate.swift */,
-				44B8553E1BF0CC620072024E /* Main.storyboard */,
 				44B855411BF0CC620072024E /* Assets.xcassets */,
-				44B855431BF0CC620072024E /* LaunchScreen.storyboard */,
 				44B855461BF0CC620072024E /* Info.plist */,
-				44EF29341BF329E300975731 /* ImageManager.swift */,
 			);
 			path = RottenTomatoes;
 			sourceTree = "<group>";
@@ -121,12 +120,29 @@
 			name = Main;
 			sourceTree = "<group>";
 		};
-		44EF29371BF33C7C00975731 /* Model */ = {
+		44EF29371BF33C7C00975731 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				44EF29381BF33C8400975731 /* Movie.swift */,
 			);
-			name = Model;
+			name = Models;
+			sourceTree = "<group>";
+		};
+		44FA8FD31BF8358B0083CCA1 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				44B8553E1BF0CC620072024E /* Main.storyboard */,
+				44B855431BF0CC620072024E /* LaunchScreen.storyboard */,
+			);
+			name = Storyboards;
+			sourceTree = "<group>";
+		};
+		44FA8FD41BF835A70083CCA1 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				44EF29341BF329E300975731 /* ImageManager.swift */,
+			);
+			name = Utils;
 			sourceTree = "<group>";
 		};
 		44FD22911BF22FD0009599AA /* Details */ = {

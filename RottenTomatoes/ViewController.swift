@@ -177,12 +177,12 @@ class ViewController: UIViewController {
     }
     
     func showNetworkInfoView() {
-        self.networkInfoView.frame.origin = CGPoint(x: self.networkInfoView.frame.origin.x, y: 64)
+        self.networkInfoView.frame.origin = CGPoint(x: self.networkInfoView.frame.origin.x, y: 108)
         self.networkInfoView.alpha = 0.85
     }
     
     func hideNetworkInfoView() {
-        self.networkInfoView.frame.origin = CGPoint(x: self.networkInfoView.frame.origin.x, y: 24)
+        self.networkInfoView.frame.origin = CGPoint(x: self.networkInfoView.frame.origin.x, y: 64)
         self.networkInfoView.alpha = 0
     }
     
@@ -192,7 +192,7 @@ class ViewController: UIViewController {
     }
 }
 
-
+// MARK: Tab Bar
 extension ViewController : UITabBarDelegate {
     func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
         switch item.tag
@@ -207,6 +207,7 @@ extension ViewController : UITabBarDelegate {
     }
 }
 
+// MARK: Search
 extension ViewController : UISearchBarDelegate {
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
         searchActive = true
@@ -246,8 +247,6 @@ extension ViewController : UISearchBarDelegate {
         }
         
         self.reloadData()
-        
-        
     }
 }
 
