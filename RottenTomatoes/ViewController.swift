@@ -34,9 +34,26 @@ class ViewController: UIViewController {
     
     var currentDataTask:NSURLSessionDataTask?
     
-    enum Tab {
-        case BoxOffice
-        case DVD
+    // MARK: Enumerations
+    enum Tab : Int {
+        case BoxOffice = 0
+        case DVD = 1
+        
+        var description:String {
+            get {
+                switch self {
+                case .BoxOffice:
+                    return "Box Office"
+                case .DVD:
+                    return "DVD"
+                }
+            }
+        }
+    }
+    
+    enum ViewStyle:Int {
+        case List = 0
+        case Grid = 1
     }
 
     override func viewDidLoad() {
@@ -51,13 +68,7 @@ class ViewController: UIViewController {
         
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
-    }
-    
     func initControls () {
-        
-        self.title = "Movies"
         
         self.navigationController?.navigationBar.barStyle = .Black;
         
@@ -97,15 +108,16 @@ class ViewController: UIViewController {
         listRefreshControl.endRefreshing()
         gridRefreshControl.endRefreshing()
         
-        switch segmentChangeView.selectedSegmentIndex
+        let viewStyle = ViewStyle(rawValue: segmentChangeView.selectedSegmentIndex)!
+        switch viewStyle
         {
-        case 1:
+        case ViewStyle.Grid:
             tableView.hidden = true
             collectionView.hidden = false
             
             refreshControl = gridRefreshControl
-        
-        default:
+
+        case ViewStyle.List:
             tableView.hidden = false
             collectionView.hidden = true
             
@@ -155,6 +167,7 @@ class ViewController: UIViewController {
         }
         
         searchBar.text = ""
+        self.title = Tab.init(rawValue: tabBar.selectedItem!.tag)?.description
     }
     
     func onFailure(error:NSError, refresh:Bool) {
@@ -176,12 +189,8 @@ class ViewController: UIViewController {
     }
     
     func onRefresh() {
-        switch tabBar.selectedItem!.tag {
-        case 1:
-            fetchData(Tab.DVD, refresh: true)
-        default:
-            fetchData(Tab.BoxOffice, refresh: true)
-        }
+        let tab = Tab.init(rawValue: tabBar.selectedItem!.tag)!
+        fetchData(tab, refresh: true)
     }
     
     func showNetworkError(show:Bool, animated:Bool = true) {
@@ -224,15 +233,8 @@ class ViewController: UIViewController {
 // MARK: Tab Bar
 extension ViewController : UITabBarDelegate {
     func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
-        switch item.tag
-        {
-            case 0:
-                fetchData(Tab.BoxOffice)
-            case 1:
-                fetchData(Tab.DVD)
-            default:
-                fetchData(Tab.BoxOffice)
-        }
+        let tab = Tab.init(rawValue: item.tag)!
+        fetchData(tab)
     }
 }
 
