@@ -3,6 +3,8 @@ This is a movies app displaying box office and top rental DVDs using the Rotten 
 
 I don't use Autolayout yet so the UI is only for iPhone 4s (3.5-inch).
 
+The project was built with version 7.1.1 (7B1005) - Language: Swift
+
 Libraries: AFNetworking, JTProgressHUD
 
 Time spent: About 12 hours
