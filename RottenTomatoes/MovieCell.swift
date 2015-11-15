@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import Alamofire
-import AlamofireImage
 
 class MovieCell: UITableViewCell {
     
@@ -18,28 +16,19 @@ class MovieCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
     
     func updateUI(movie:NSDictionary) {
-        
-        
-        
         let title =  "\(movie["title"]!)"
         titleLabel.text = title
         descriptionLabel.text = "\(movie["synopsis"]!)"
         let thumbnailURL = movie.valueForKeyPath("posters.thumbnail") as! String
         let detailedURL = movie.valueForKeyPath("posters.detailed") as! String
         ImageManager.loadPosters(thumbnailURL, detailedURL: detailedURL, posterImageView: self.posterImageView)
-        
-
-        
     }
     
 }
