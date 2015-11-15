@@ -5,10 +5,9 @@
 
 target 'RottenTomatoes' do
 
-pod 'Alamofire', '~> 3.1'
-pod 'AlamofireImage', '~> 2.0'
 pod 'EVReflection', '~> 2.11'
 pod 'JTProgressHUD’
+pod 'AFNetworking'
 
 end
 

@@ -28,12 +28,18 @@ class MovieCell: UITableViewCell {
     }
     
     func updateUI(movie:NSDictionary) {
+        
+        
+        
         let title =  "\(movie["title"]!)"
         titleLabel.text = title
         descriptionLabel.text = "\(movie["synopsis"]!)"
         let thumbnailURL = movie.valueForKeyPath("posters.thumbnail") as! String
         let detailedURL = movie.valueForKeyPath("posters.detailed") as! String
         ImageManager.loadPosters(thumbnailURL, detailedURL: detailedURL, posterImageView: self.posterImageView)
+        
+
+        
     }
     
 }

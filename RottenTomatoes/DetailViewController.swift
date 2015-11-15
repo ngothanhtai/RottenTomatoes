@@ -22,12 +22,18 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
 
         if let _movie = movie {
-            ImageManager.loadPosters(_movie.valueForKeyPath("posters.thumbnail") as! String, detailedURL: _movie.valueForKeyPath("posters.detailed") as! String, posterImageView: self.posterImageView)
+            
+            let thumbnailURL = _movie.valueForKeyPath("posters.thumbnail") as! String
+            let detailedURL = _movie.valueForKeyPath("posters.detailed") as! String
+
             self.audienceRating.text = "\(_movie["ratings"]!["audience_score"]!!)%"
             self.criticsRating.text = "\(_movie["ratings"]!["critics_score"]!!)%"
             self.synopsis.text = "\(_movie["synopsis"]!)"
             
             self.title = movie!["title"] as? String
+            
+            
+            ImageManager.loadPosters(thumbnailURL, detailedURL: detailedURL, posterImageView: self.posterImageView)
         }
     }
 

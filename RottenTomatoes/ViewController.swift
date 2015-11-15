@@ -10,148 +10,144 @@ import UIKit
 import EVReflection
 import JTProgressHUD
 
+struct StoryBoard {
+    static let DetailView = "DetailView"
+    static let MovieCell = "MovieCell"
+    static let MovieCollectionViewCell = "MovieCollectionViewCell"
+}
+
 class ViewController: UIViewController {
+    // MARK: Outlets
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var networkInfoView: UIView!
     @IBOutlet weak var searchBar: UISearchBar!
-    
     @IBOutlet weak var segmentChangeView: UISegmentedControl!
-    
     @IBOutlet weak var tabBar: UITabBar!
     
-    var movies = [NSDictionary]!()
-    var refreshControl:UIRefreshControl!
-    
-    var searchActive = false
+    var movies = [NSDictionary]()
     var filtered = [NSDictionary]()
-    
-    struct StoryBoard {
-        static let DetailView = "DetailView"
-    }
-    
-    struct API {
-        static let boxOfficeAPI = "https://coderschool-movies.herokuapp.com/movies?api_key=xja087zcvxljadsflh214"
-        static let dvdAPI = "https://coderschool-movies.herokuapp.com/dvds?api_key=xja087zcvxljadsflh214"
-    }
+    var searchActive = false
+    var refreshControl:UIRefreshControl!
 
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        self.title = "Movies"
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         movies = []
 
+        initControls()
+        initDelegateAndDataSource()
+
+        fetchMovies()
+        
+    }
+    
+    func initControls () {
+        
+        self.title = "Movies"
+        
         // init refreshControl
         refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: "onRefresh", forControlEvents: .ValueChanged)
-        self.tableView.insertSubview(refreshControl, atIndex: 0)
-        self.collectionView.insertSubview(refreshControl, atIndex: 0)
+        tableView.insertSubview(refreshControl, atIndex: 0)
         
+        networkInfoView.alpha = 0
+        
+        segmentChangeView.selectedSegmentIndex = 0
+        showViewBasedOnSegmentSelection()
+    }
+    
+    func initDelegateAndDataSource() {
         tableView.dataSource = self
         tableView.delegate = self
         collectionView.dataSource = self
         collectionView.delegate = self
         
         searchBar.delegate = self
-
-        networkInfoView.alpha = 0
         
         tabBar.delegate = self
         tabBar.selectedItem = tabBar.items![0]
-        
-        segmentChangeView.selectedSegmentIndex = 1
+    }
+    
+    // MARK: Actions
+    @IBAction func onSegmentValueChanged(sender: AnyObject) {
         showViewBasedOnSegmentSelection()
+    }
+    
+    func showViewBasedOnSegmentSelection() {
 
-        fetchMovies()
+        switch segmentChangeView.selectedSegmentIndex
+        {
+        case 1:
+            tableView.hidden = true
+            collectionView.hidden = false
+        
+        default:
+            tableView.hidden = false
+            collectionView.hidden = true
+            
+            
+        }
         
     }
     
     func fetchMovies(refresh:Bool = false) {
         
-       fetchData(API.boxOfficeAPI, refresh: refresh)
+        self.showNetworkError(false, animated: false)
+        showLoadingIcon(refresh)
+        
+        API.getMovies(refresh, onSuccess: onSuccess, onFailure: onFailure)
     }
     
     func fetchDVD(refresh:Bool = false) {
+        self.showNetworkError(false, animated: false)
+        showLoadingIcon(refresh)
         
-        fetchData(API.dvdAPI, refresh: refresh)
-        
+        API.getDVD(refresh, onSuccess: onSuccess, onFailure: onFailure)
     }
     
-    func fetchData(apiURL:String, refresh:Bool) {
-        self.showNetworkError(false, animated: false)
+    func showLoadingIcon(refresh:Bool) {
+        
         if !refresh {
             // show animation loading icon
             JTProgressHUD.show()
             //
         }
-        
-        let url = NSURL(string: apiURL)
-        let sesson = NSURLSession.sharedSession()
-        let task = sesson.dataTaskWithURL(url!) { (data:NSData?, response:NSURLResponse?, error:NSError?) -> Void in
-            guard error == nil else {
-                print("Error \(error)")
-                
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    
-                    self.showNetworkError(true)
-                    JTProgressHUD.hide()
-                    if refresh {
-                        self.refreshControl.endRefreshing()
-                    }
-                })
-                
-                return
-            }
-            
-            let json = try! NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments) as! NSDictionary
-            
-            self.movies = json["movies"] as! [NSDictionary]
-            
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                
-                self.showNetworkError(false)
-                
-                self.reloadData()
-                
-                if refresh {
-                    self.refreshControl.endRefreshing()
-                }
-                else {
-                    JTProgressHUD.hide()
-                }
-            })
-        }
-        task.resume()
     }
+    
+    func onSuccess(data:NSData, refresh:Bool) {
+        let json = try! NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as! NSDictionary
+        self.movies = json["movies"] as! [NSDictionary]
+        
+        self.showNetworkError(false)
+        
+        self.reloadData()
+        
+        if refresh {
+            self.refreshControl.endRefreshing()
+        }
+        else {
+            JTProgressHUD.hide()
+        }
+    }
+    
+    func onFailure(error:NSError, refresh:Bool) {
+        self.showNetworkError(true)
+        JTProgressHUD.hide()
+        if refresh {
+            self.refreshControl.endRefreshing()
+        }
+    }
+    
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let detailViewController = segue.destinationViewController as? DetailViewController {
             let indexPath = sender as! NSIndexPath
             detailViewController.movie = self.movies[indexPath.row]
         }
-    }
-    
-    @IBAction func onSegmentValueChanged(sender: AnyObject) {
-        showViewBasedOnSegmentSelection()
-    }
-    
-    func showViewBasedOnSegmentSelection() {
-        switch segmentChangeView.selectedSegmentIndex
-        {
-        case 1:
-            tableView.hidden = true
-            collectionView.hidden = false
-        default:
-            tableView.hidden = false
-            collectionView.hidden = true
-        }
         
+        view.endEditing(true)
     }
-    
     
     func onRefresh() {
         switch tabBar.selectedItem!.tag {
@@ -224,6 +220,7 @@ extension ViewController : UISearchBarDelegate {
     
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        
         searchActive = false
         
         searchBar.resignFirstResponder()
@@ -231,20 +228,26 @@ extension ViewController : UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         searchActive = true
+        
+        searchBar.resignFirstResponder()
     }
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        filtered = movies.filter({ (movie:NSDictionary) -> Bool in
-            let title =  "\(movie["title"]!)"
-            return title.lowercaseString.containsString(searchText.lowercaseString)
-        })
+        
+        if searchText.characters.count == 0
+        {
+            filtered = movies
+        }
+        else {
+            filtered = movies.filter({ (movie:NSDictionary) -> Bool in
+                let title =  "\(movie["title"]!)"
+                return title.lowercaseString.containsString(searchText.lowercaseString)
+            })
+        }
         
         self.reloadData()
         
-        if (searchText.characters.count == 0)
-        {
-            searchBar.resignFirstResponder()
-        }
+        
     }
 }
 
@@ -263,7 +266,14 @@ extension ViewController : UITableViewDelegate, UITableViewDataSource {
         {
             return UITableViewCell()
         }
-        let cell = tableView.dequeueReusableCellWithIdentifier("movieCell") as! MovieCell
+        
+        if searchActive {
+            if filtered.count == 0
+            {
+                return UITableViewCell()
+            }
+        }
+        let cell = tableView.dequeueReusableCellWithIdentifier(StoryBoard.MovieCell) as! MovieCell
         let movie = searchActive ? filtered[indexPath.row] : movies[indexPath.row]
         
         cell.updateUI(movie)
@@ -293,16 +303,18 @@ extension ViewController : UICollectionViewDelegate, UICollectionViewDataSource 
         {
             return UICollectionViewCell()
         }
-        let cell = self.collectionView.dequeueReusableCellWithReuseIdentifier("movieCollectionViewCell", forIndexPath: indexPath) as! MovieCollectionViewCell
+        let cell = self.collectionView.dequeueReusableCellWithReuseIdentifier(StoryBoard.MovieCollectionViewCell, forIndexPath: indexPath) as! MovieCollectionViewCell
         let movie = searchActive ? filtered[indexPath.row] : movies[indexPath.row]
         
         cell.updateUI(movie)
+        
         
         return cell
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        self.collectionView.deselectItemAtIndexPath(indexPath, animated: false)
+        
+//        let cell = self.collectionView.cellForItemAtIndexPath(indexPath) as! MovieCollectionViewCell
         self.performSegueWithIdentifier(StoryBoard.DetailView, sender: indexPath)
     }
 }
