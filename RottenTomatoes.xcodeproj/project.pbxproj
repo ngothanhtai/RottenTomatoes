@@ -66,15 +66,6 @@
 			name = Services;
 			sourceTree = "<group>";
 		};
-		44212EBF1BF6D88F00F91D54 /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				44B8554C1BF0D19B0072024E /* MovieCell.swift */,
-				44212EC01BF6D8AC00F91D54 /* MovieCollectionViewCell.swift */,
-			);
-			name = Cells;
-			sourceTree = "<group>";
-		};
 		44B8552E1BF0CC610072024E = {
 			isa = PBXGroup;
 			children = (
@@ -96,11 +87,10 @@
 		44B855391BF0CC620072024E /* RottenTomatoes */ = {
 			isa = PBXGroup;
 			children = (
+				44EF9E581BFC74E6000B538C /* View Controllers */,
+				44EF9E571BFC74E1000B538C /* Views */,
 				44FA8FD41BF835A70083CCA1 /* Utils */,
-				44FA8FD31BF8358B0083CCA1 /* Storyboards */,
 				440F65321BF7529F0082C370 /* Services */,
-				44FD22911BF22FD0009599AA /* Details */,
-				44B855501BF1F8840072024E /* Main */,
 				44B8553A1BF0CC620072024E /* AppDelegate.swift */,
 				44B855411BF0CC620072024E /* Assets.xcassets */,
 				44B855461BF0CC620072024E /* Info.plist */,
@@ -108,22 +98,24 @@
 			path = RottenTomatoes;
 			sourceTree = "<group>";
 		};
-		44B855501BF1F8840072024E /* Main */ = {
-			isa = PBXGroup;
-			children = (
-				44212EBF1BF6D88F00F91D54 /* Cells */,
-				44B8553C1BF0CC620072024E /* ViewController.swift */,
-			);
-			name = Main;
-			sourceTree = "<group>";
-		};
-		44FA8FD31BF8358B0083CCA1 /* Storyboards */ = {
+		44EF9E571BFC74E1000B538C /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				44B8553E1BF0CC620072024E /* Main.storyboard */,
 				44B855431BF0CC620072024E /* LaunchScreen.storyboard */,
 			);
-			name = Storyboards;
+			name = Views;
+			sourceTree = "<group>";
+		};
+		44EF9E581BFC74E6000B538C /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				44FD22921BF22FF2009599AA /* DetailViewController.swift */,
+				44B8553C1BF0CC620072024E /* ViewController.swift */,
+				44B8554C1BF0D19B0072024E /* MovieCell.swift */,
+				44212EC01BF6D8AC00F91D54 /* MovieCollectionViewCell.swift */,
+			);
+			name = "View Controllers";
 			sourceTree = "<group>";
 		};
 		44FA8FD41BF835A70083CCA1 /* Utils */ = {
@@ -132,14 +124,6 @@
 				44EF29341BF329E300975731 /* ImageManager.swift */,
 			);
 			name = Utils;
-			sourceTree = "<group>";
-		};
-		44FD22911BF22FD0009599AA /* Details */ = {
-			isa = PBXGroup;
-			children = (
-				44FD22921BF22FF2009599AA /* DetailViewController.swift */,
-			);
-			name = Details;
 			sourceTree = "<group>";
 		};
 		D17162C7BEA37DAD192055B8 /* Pods */ = {

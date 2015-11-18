@@ -12,9 +12,7 @@ import AFNetworking
 
 class ImageManager {
     
-    static func loadPosters(thumbnailURL:String, detailedURL:String, posterImageView:UIImageView)
-    
-    {
+    static func loadPosters(thumbnailURL:String, detailedURL:String, posterImageView:UIImageView) {
         ImageManager.loadImage(thumbnailURL, posterImageView: posterImageView) { (thumbnailImage, fromCache) -> Void in
             posterImageView.image = thumbnailImage
             
@@ -32,6 +30,7 @@ class ImageManager {
     
     static func loadImage(urlString:String, posterImageView:UIImageView, callBack: (dynamicImage:UIImage, fromCache:Bool) -> Void) {
         let urlRequest = NSURLRequest(URL: NSURL(string: urlString)!, cachePolicy: NSURLRequestCachePolicy.ReturnCacheDataElseLoad, timeoutInterval: 86400)
+        
         posterImageView.setImageWithURLRequest(urlRequest, placeholderImage: nil, success: { (urlRequest:NSURLRequest, httpURLResponse:NSHTTPURLResponse?, image:UIImage) -> Void in
             callBack(dynamicImage: image, fromCache: httpURLResponse == nil)
             
