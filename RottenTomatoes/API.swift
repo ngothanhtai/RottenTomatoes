@@ -33,8 +33,11 @@ class API {
         }
 
         let url = NSURL(string: apiURL)
-        let sesson = NSURLSession.sharedSession()
-        let task = sesson.dataTaskWithURL(url!) { (data:NSData?, response:NSURLResponse?, error:NSError?) -> Void in
+        let session = NSURLSession.sharedSession()
+        let request = NSURLRequest(URL: url!, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: 86400)
+        //let task = sesson.dataTaskWithURL(url!) { (data:NSData?, response:NSURLResponse?, error:NSError?) -> Void in
+        
+        let task = session.dataTaskWithRequest(request) { (data:NSData?, response:NSURLResponse?, error:NSError?) -> Void in
             guard error == nil else {
                 print("Error \(error)")
                 

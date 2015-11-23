@@ -238,11 +238,13 @@ extension ViewController : UITabBarDelegate {
 // MARK: Search
 extension ViewController : UISearchBarDelegate {
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
-        searchBar.showsCancelButton = true
+//        searchBar.showsCancelButton = true
+        searchBar.setShowsCancelButton(true, animated: true)
     }
     
     func searchBarTextDidEndEditing(searchBar: UISearchBar) {
-        searchBar.showsCancelButton = false
+//        searchBar.showsCancelButton = false
+        searchBar.setShowsCancelButton(false, animated: true)
         searchBar.resignFirstResponder()
     }
     
